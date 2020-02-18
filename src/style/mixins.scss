@@ -1,0 +1,17 @@
+//@mixin fontFace($font-family, $weight: normal, $style: normal) {
+//  @font-face {
+//    font-family: $font-family;
+//    src: url("../assets/fonts/#{$font-family}.woff") format("woff");
+//    font-weight: $weight;
+//    font-style: $style;
+//  }
+//}
+//
+
+@mixin fontFamily($font-family, $style: sans-serif) {
+  @if $style == sans-serif {
+    font-family: "#{$font-family}", Arial, Helvetica, sans-serif
+  } @else if $style == serif {
+    font-family: "#{$font-family}", "Times New Roman", Times, serif
+  }
+}

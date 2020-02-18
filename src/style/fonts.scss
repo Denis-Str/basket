@@ -1,0 +1,31 @@
+//@import "./mixins";
+//@import "./vars";
+//@include fontFace($SansProReg);
+//@include fontFace($SansProBold, 600, italic);
+//@include fontFace($SansProBook);
+//@include fontFace($SansProLight);
+
+@font-face {
+  font-family: SansProReg;
+  src: url("~@/assets/fonts/SansProReg.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: SansProBold;
+  src: url("~@/assets/fonts/SansProBold.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: SansProBold;
+  src: url("~@/assets/fonts/SansProBold.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: SansProLight;
+  src: url("~@/assets/fonts/SansProLight.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}

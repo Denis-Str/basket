@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+.wrapper {
+  position: relative;
+  color: $content;
+  @include fontFamily($SansProReg);
+}
+
+.container {
+  max-width: $desktop;
+  margin: 0 auto;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: flex;
+}
