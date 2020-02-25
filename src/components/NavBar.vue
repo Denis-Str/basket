@@ -42,5 +42,7 @@
 </script>
 
 <style scoped>
-
+  .nav__list {
+    display: flex;
+  }
 </style>

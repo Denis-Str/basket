@@ -1,5 +1,5 @@
 <template lang="pug">
-  header
+  header.header
     .logo
       img(:src="samsImg")
     search
@@ -20,6 +20,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
 
 </style>

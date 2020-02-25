@@ -29,5 +29,7 @@
 </script>
 
 <style scoped>
-
+  .bread-crumbs__list {
+    display: flex;
+  }
 </style>

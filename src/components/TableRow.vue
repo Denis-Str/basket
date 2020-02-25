@@ -1,12 +1,10 @@
 <template lang="pug">
-  tr(
-
-  ).table__row
+  tr().table__row
     td(
       class="table__cell"
     )
       table-row-check(
-        :count="good.id"
+        :count="good.id + 1"
       )
     td(
       class="table__cell img"
@@ -23,21 +21,28 @@
     td(
       class="table__cell value"
     )
-      table-row-amount
+      table-row-amount(:id="good.id")
     td(
       class="table__cell sum"
-    ) 990 &#x20bd;
-    pre
+    ) {{totalSumRow}} &#x20bd; {{good.totalPrice}}
 </template>
 
 <script>
   import TableRowCheck from "@/components/TableRowCheck";
   import TableRowAmount from "@/components/TableRowAmount";
+
   export default {
     name: "TableRow",
     components: {TableRowAmount, TableRowCheck},
-    props: ["good"]
+    props: ["good"],
+    computed: {
+      totalSumRow() {
+        return this.$store.getters.getRowSum
+      }
+    }
+
   }
+
 </script>
 
 <style scoped>
