@@ -10,10 +10,9 @@
         :good="good"
       )
     ul.final
-      li.final__sum Промежуточный итог по корзине: 194 760 &#x20bd;
+      li.final__sum Промежуточный итог по корзине: {{ sum }} &#x20bd;
       li.final__tax В том числе НДС: 29 706 &#x20bd;
       li.final__total Итого: 195 040 &#x20bd;
-    pre {{goods}}
 </template>
 
 <script>
@@ -24,12 +23,30 @@
   export default {
     name: "Table",
     components: {TableRow, TableRemoveBtn},
+    data() {
+      return {
+        // q: 4
+      }
+    },
     computed: {
       ...mapState({
         goods: state => state.goods,
       }),
-
+      sum() {
+        // return this.$store.getters.computedTotalPrice
+        return this.$store.state.goods.forEach(item => {
+          console.log(item.totalPrice);
+          let sum = 0;
+          sum += item.totalPrice;
+          return sum
+        })
+      }
     },
+    methods: {
+      w() {
+        this.q = this.sum
+      }
+    }
   }
 
 </script>

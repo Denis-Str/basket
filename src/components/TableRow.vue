@@ -14,37 +14,55 @@
       )
     td(
       class="table__cell desc"
-    ) {{good.content}}
+    ) {{0 || good.content}}
     td(
       class="table__cell price"
-    ) {{good.price}} &#x20bd;
+    ) {{good.price}} &#x20bd; x
     td(
       class="table__cell value"
-    )
-      table-row-amount(:id="good.id")
+      @click.self.prevent="isActive = true"
+    ) {{good.count}}
+      change-quantity-goods(
+        v-show="isActive"
+        @cancel="hiddenForm"
+        @totalSum="hiddenForm"
+        :price="good.price"
+        :id="good.id"
+        )
     td(
       class="table__cell sum"
-    ) {{totalSumRow}} &#x20bd; {{good.totalPrice}}
+    ) {{good.totalPrice}} &#x20bd;
 </template>
 
 <script>
   import TableRowCheck from "@/components/TableRowCheck";
-  import TableRowAmount from "@/components/TableRowAmount";
+  import ChangeQuantityGoods from "@/components/ChangeQuantityGoods";
 
   export default {
     name: "TableRow",
-    components: {TableRowAmount, TableRowCheck},
+    components: {ChangeQuantityGoods, TableRowCheck},
     props: ["good"],
-    computed: {
-      totalSumRow() {
-        return this.$store.getters.getRowSum
+    data() {
+      return {
+        isActive: false
       }
+    },
+    methods: {
+      hiddenForm() {
+        this.isActive = false;
+      },
     }
-
   }
 
 </script>
 
 <style scoped>
-
+  .table__row {
+    position: relative;
+    height: 75px;
+  }
+  .value {
+    position: relative;
+    cursor: pointer;
+  }
 </style>
