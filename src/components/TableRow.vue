@@ -2,36 +2,37 @@
   tr().table__row
     td(
       class="table__cell"
-    )
+    ) {{good.id + 1}}
       table-row-check(
-        :count="good.id + 1"
       )
     td(
       class="table__cell img"
     )
       img(
-        :src="good.img"
+
       )
     td(
       class="table__cell desc"
-    ) {{0 || good.content}}
+    ) {{ good.content }}
     td(
       class="table__cell price"
-    ) {{good.price}} &#x20bd; x
+    ) {{ good.price }} &#x20bd; x
     td(
       class="table__cell value"
-      @click.self.prevent="isActive = true"
-    ) {{good.count}}
+      @click.self.prevent="isShow = true"
+    ) {{count}}
       change-quantity-goods(
-        v-show="isActive"
-        @cancel="hiddenForm"
-        @totalSum="hiddenForm"
+        v-show="isShow"
+        :count="count"
         :price="good.price"
-        :id="good.id"
-        )
+        :changeSum="changeSum"
+        :cancelBuy="cancelBuy"
+        :countUp="changeCountUp"
+        :countDown="changeCounterDown"
+      )
     td(
       class="table__cell sum"
-    ) {{good.totalPrice}} &#x20bd;
+    ) = {{ sumRow }} &#x20bd;
 </template>
 
 <script>
@@ -40,23 +41,51 @@
 
   export default {
     name: "TableRow",
-    components: {ChangeQuantityGoods, TableRowCheck},
-    props: ["good"],
     data() {
       return {
-        isActive: false
+        count: 0,
+        isShow: false,
+        sumId: {
+          sum: 0,
+          id: 0
+        }
+      }
+    },
+    props: {
+      good: Object,
+
+    },
+    components: {ChangeQuantityGoods, TableRowCheck},
+    computed: {
+      sumRow() {
+        return this.good.price * this.count
       }
     },
     methods: {
-      hiddenForm() {
-        this.isActive = false;
+      changeCountUp() {
+        this.count += 1
       },
-    }
+      changeCounterDown() {
+        (this.count > 0 ) ? this.count -= 1 : this.count = 0;
+      },
+      changeSum() {
+        this.isShow = false;
+        this.sumId.id = this.good.id;
+        this.sumId.sum = this.sumRow;
+        this.$emit('sumInRow', this.sumId);
+      },
+      cancelBuy() {
+        this.count = 0;
+        this.sumRow = 0;
+        this.isShow = false;
+      }
+    },
   }
 
 </script>
 
 <style scoped>
+
   .table__row {
     position: relative;
     height: 75px;
@@ -64,5 +93,9 @@
   .value {
     position: relative;
     cursor: pointer;
+  }
+  td {
+    border: 1px solid black;
+    border-collapse: collapse;
   }
 </style>

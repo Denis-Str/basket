@@ -7,7 +7,7 @@
 
 <script>
   import samsImg from '../assets/images/samsung.png'
-  import Search from "@/components/search";
+  import Search from "@/components/Search";
   export default {
     name: "MainHeader",
     components: {Search},

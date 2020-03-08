@@ -6,45 +6,57 @@
         th(colspan="3").table__remove
           table-remove-btn
       table-row(
-        v-for="good in goods" :key="good.id"
+        v-for="good in goods"
         :good="good"
+        @sumInRow="changeSumInGood"
       )
+    pre {{ goods }}
     ul.final
-      li.final__sum Промежуточный итог по корзине: {{ sum }} &#x20bd;
-      li.final__tax В том числе НДС: 29 706 &#x20bd;
-      li.final__total Итого: 195 040 &#x20bd;
+      li.final__sum Промежуточный итог по корзине: {{ subtotal }} &#x20bd;
+      li.final__tax В том числе НДС: {{ Math.round(tax) }}  &#x20bd;
+      li.final__total Итого: {{ Math.round(inTotal) }} &#x20bd;
 </template>
 
 <script>
   import TableRemoveBtn from "@/components/TableRemoveBtn";
-  import TableRow from "@/components/TableRow";
-  import {mapState} from  "vuex";
+  import TableRow from "@/components/TableRow"
+  import json from "../data/goods";
 
   export default {
     name: "Table",
     components: {TableRow, TableRemoveBtn},
     data() {
       return {
-        // q: 4
-      }
-    },
-    computed: {
-      ...mapState({
-        goods: state => state.goods,
-      }),
-      sum() {
-        // return this.$store.getters.computedTotalPrice
-        return this.$store.state.goods.forEach(item => {
-          console.log(item.totalPrice);
-          let sum = 0;
-          sum += item.totalPrice;
-          return sum
-        })
+        goods: [],
       }
     },
     methods: {
-      w() {
-        this.q = this.sum
+      changeSumInGood(sumId){
+        this.goods.map((item)=> {
+          if (item.id === sumId.id) {
+            item.sum = 0;
+            item.sum = sumId.sum;
+          }
+        });
+      },
+
+    },
+    computed: {
+      subtotal() {
+
+        return this.goods[0].sum
+      },
+      tax() {
+        return this.subtotal * 0.18;
+      },
+      inTotal() {
+        return this.tax + this.subtotal
+      },
+    },
+    created() {
+      this.goods = require("../data/goods.json");
+      for (let key of json) {
+        key.sum = 0;
       }
     }
   }
@@ -54,23 +66,10 @@
 <style scoped>
   .table {
     width: 100%;
+    border-collapse: collapse;
   }
 </style>
 
+<!--:tableSum="tableSum"
 
-
-// const goodsJson = require("../data/goods");
-// this.goods = goodsJson;
-// this.makeArrImg(this.goods)
-// this.goods = this.makeArrImg(goods);
-
-
-// makeArrImg (goods) {
-//   return goods.map(item => {
-//     const requiredPic = require(`../assets/images/goodsImg/${item.img}.png`);
-//     item.img = `../assets/images/goodsImg/${item.img}`;
-//     item.img = requiredPic;
-//     return item
-//   })
-// },
-
+:sum123="good.sum"-->
