@@ -45,10 +45,6 @@
       return {
         count: 0,
         isShow: false,
-        sumId: {
-          sum: 0,
-          id: 0
-        }
       }
     },
     props: {
@@ -70,9 +66,7 @@
       },
       changeSum() {
         this.isShow = false;
-        this.sumId.id = this.good.id;
-        this.sumId.sum = this.sumRow;
-        this.$emit('sumInRow', this.sumId);
+        this.$emit('sumInRow', this.good.id, this.count);
       },
       cancelBuy() {
         this.count = 0;

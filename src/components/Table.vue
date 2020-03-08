@@ -10,17 +10,17 @@
         :good="good"
         @sumInRow="changeSumInGood"
       )
-    pre {{ goods }}
     ul.final
       li.final__sum Промежуточный итог по корзине: {{ subtotal }} &#x20bd;
       li.final__tax В том числе НДС: {{ Math.round(tax) }}  &#x20bd;
       li.final__total Итого: {{ Math.round(inTotal) }} &#x20bd;
+    pre {{ totalCost }}
 </template>
 
 <script>
   import TableRemoveBtn from "@/components/TableRemoveBtn";
   import TableRow from "@/components/TableRow"
-  import json from "../data/goods";
+  // import json from "../data/goods";
 
   export default {
     name: "Table",
@@ -28,23 +28,56 @@
     data() {
       return {
         goods: [],
+        totalCost: [
+          {
+            id: 0,
+            count: 1,
+            sum: 0
+          },
+          {
+            id: 1,
+            count: 1,
+            sum: 0
+
+          },
+          {
+            id: 2,
+            count: 1,
+            sum: 0
+          },
+        ]
       }
     },
     methods: {
-      changeSumInGood(sumId){
-        this.goods.map((item)=> {
-          if (item.id === sumId.id) {
-            item.sum = 0;
-            item.sum = sumId.sum;
+      findPrice(id) {
+        return this.goods.forEach(item => {
+          // return item.id === id ? item.price : 0
+          if (item.id === id ) {
+            return item.price
+          }
+        })
+        // return this.goods.filter(item => item.id === id ? item.price : 0)
+        // return this.goods.forEach(item => item.id === id ? item.price : 0)
+      },
+      changeSumInGood(id, count){
+        // let currentId = this.goods.forEach(good => good.id === id ? good.price : 0);
+        console.log(this.findPrice(id));
+        this.totalCost.map(item => {
+          if (item.id === id) {
+            item.count = count;
+            item.sum = count * this.findPrice(id)
           }
         });
-      },
 
+      },
     },
     computed: {
       subtotal() {
-
-        return this.goods[0].sum
+        let sum = 0;
+        this.totalCost.map(item => {
+          sum += item.sum
+        });
+        return sum
       },
       tax() {
         return this.subtotal * 0.18;
@@ -55,9 +88,9 @@
     },
     created() {
       this.goods = require("../data/goods.json");
-      for (let key of json) {
-        key.sum = 0;
-      }
+      // for (let item of this.goods) {
+      //
+      // }
     }
   }
 
