@@ -5,7 +5,12 @@
         Main-header
         Nav-bar
         Bread-crumbs
-        Table
+        Table(
+          :goods="goods"
+        )
+        FullPrice(
+          :goods="goods"
+        )
 </template>
 
 <script>
@@ -14,15 +19,27 @@ import MainHeader from "@/components/MainHeader";
 import NavBar from "@/components/NavBar";
 import BreadCrumbs from "@/components/BreadCrumbs";
 import Table from "@/components/Table";
+import FullPrice from "@/components/FullPrice";
 
 export default {
   name: 'App',
+  data() {
+    return {
+      goods: [],
+    }
+  },
   components: {
+    FullPrice,
     Table,
     BreadCrumbs,
     NavBar,
     MainHeader,
+  },
+  created() {
+    const data = require("./data/goods.json");
+    this.goods = data.map(item => ({...item, count: 1, checked: false}))
   }
+
 }
 </script>
 

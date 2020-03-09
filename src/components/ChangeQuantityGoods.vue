@@ -23,7 +23,7 @@
     .form__edit
       button(
         type="button"
-        @click.self.prevent="changeSum"
+        @click.self.prevent="saveBuy"
       ) Сохранить
       button(
         type="button"
@@ -35,12 +35,12 @@
   export default {
     name: "ChangeQuantityGoods",
     props: {
+      count: Number,
       price: Number,
       sum: Number,
-      count: Number,
       countUp: Function,
       countDown: Function,
-      changeSum: Function,
+      saveBuy: Function,
       cancelBuy: Function
     },
   }

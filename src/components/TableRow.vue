@@ -3,8 +3,10 @@
     td(
       class="table__cell"
     ) {{good.id + 1}}
-      table-row-check(
-      )
+        input(
+          type="checkbox"
+          @change.self.prevent="checkedGood"
+        )
     td(
       class="table__cell img"
     )
@@ -20,57 +22,52 @@
     td(
       class="table__cell value"
       @click.self.prevent="isShow = true"
-    ) {{count}}
+    ) {{good.count}}
       change-quantity-goods(
         v-show="isShow"
-        :count="count"
+        :count="good.count"
         :price="good.price"
-        :changeSum="changeSum"
-        :cancelBuy="cancelBuy"
+        :sum="good.totalPrice"
         :countUp="changeCountUp"
         :countDown="changeCounterDown"
+        :saveBuy="saveBuy"
+        :cancelBuy="cancelBuy"
       )
     td(
       class="table__cell sum"
-    ) = {{ sumRow }} &#x20bd;
+    ) = {{ good.totalPrice }} &#x20bd;
 </template>
 
 <script>
-  import TableRowCheck from "@/components/TableRowCheck";
   import ChangeQuantityGoods from "@/components/ChangeQuantityGoods";
 
   export default {
     name: "TableRow",
     data() {
       return {
-        count: 0,
         isShow: false,
       }
     },
     props: {
       good: Object,
+    },
+    components: {ChangeQuantityGoods},
 
-    },
-    components: {ChangeQuantityGoods, TableRowCheck},
-    computed: {
-      sumRow() {
-        return this.good.price * this.count
-      }
-    },
     methods: {
+      checkedGood(e) {
+        this.good.checked = e.target.checked
+      },
       changeCountUp() {
-        this.count += 1
+        this.good.count += 1
       },
       changeCounterDown() {
-        (this.count > 0 ) ? this.count -= 1 : this.count = 0;
+        (this.good.count > 0 ) ? this.good.count -= 1 : this.good.count = 0;
       },
-      changeSum() {
+      saveBuy() {
         this.isShow = false;
-        this.$emit('sumInRow', this.good.id, this.count);
       },
       cancelBuy() {
-        this.count = 0;
-        this.sumRow = 0;
+        this.good.count = 0;
         this.isShow = false;
       }
     },
