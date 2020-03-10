@@ -3,9 +3,10 @@
     ul.bread-crumbs__list
       li(
         v-for="link in links"
-      ).bread-crumbs__item
+        class="bread-crumbs__item"
+      )
         a(:href="link.href").bread-crumbs__link {{link.title}}
-    .bread-crumbs__title {{links[links.length - 1].title}}
+    .bread-crumbs__sup-title Корзина
 </template>
 
 <script>
@@ -28,8 +29,28 @@
   }
 </script>
 
-<style scoped>
-  .bread-crumbs__list {
-    display: flex;
+<style lang="scss" scoped>
+  .bread-crumbs {
+    margin-bottom: 30px;
+    &__list {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    &__item {
+      display: flex;
+      &:first-child {
+        text-decoration: underline;
+      }
+      &:not(:first-child)::before {
+        content: "/";
+        margin-right: 10px;
+        margin-left: 10px;
+      }
+    }
+    &__sup-title {
+      font-size: 30px;
+      color: #0a7eb5;
+      text-transform: uppercase;
+    }
   }
 </style>

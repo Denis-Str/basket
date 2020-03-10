@@ -1,28 +1,22 @@
 <template lang="pug">
   tr().table__row
-    td(
-      class="table__cell"
-    ) {{good.id + 1}}
-        input(
-          type="checkbox"
-          @change.self.prevent="checkedGood"
-        )
-    td(
-      class="table__cell img"
-    )
+    td(class="table__cell table__cell-border-right checked")
+      input(
+        type="checkbox"
+        @change.self.prevent="checkedGood"
+        class="checkbox"
+      )
+      span {{good.id + 1}}
+    td(class="table__cell table__cell-border-right img")
       img(
 
       )
-    td(
-      class="table__cell desc"
-    ) {{ good.content }}
-    td(
-      class="table__cell price"
-    ) {{ good.price }} &#x20bd; x
-    td(
-      class="table__cell value"
-      @click.self.prevent="isShow = true"
-    ) {{good.count}}
+    td(class="table__cell table__cell-border-right desc") {{ good.content }}
+    td(class="table__cell price")
+      span(style="padding-right: 7px") {{ good.price }} &#x20bd;
+      span(v-show="isShow") x
+    td(class="table__cell value")
+      span(@click="isShow = true") {{good.count}}
       change-quantity-goods(
         v-show="isShow"
         :count="good.count"
@@ -35,7 +29,9 @@
       )
     td(
       class="table__cell sum"
-    ) = {{ good.totalPrice }} &#x20bd;
+    )
+      span(v-show="isShow") =
+      span(style="padding-left: 7px") {{ good.totalPrice }} &#x20bd;
 </template>
 
 <script>
@@ -75,18 +71,46 @@
 
 </script>
 
-<style scoped>
-
-  .table__row {
-    position: relative;
-    height: 75px;
+<style lang="scss" scoped>
+  .checkbox {
+    margin-right: 20px;
   }
   .value {
     position: relative;
     cursor: pointer;
+    span {
+      width: 50px;
+      height: 22px;
+      box-shadow: inset 0 0 5px 0 rgba(9, 12, 18, 0.12);
+      border: solid 1px #bdbdbd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto;
+      border-radius: 5px;
+    }
+  }
+  .table__cell {
+    width: 8%;
+    padding: 20px 0;
+    border-collapse: collapse;
+    vertical-align: middle;
+    text-align: center;
+    &-border-right {
+      border-right: 1px dotted black;
+    }
   }
   td {
-    border: 1px solid black;
-    border-collapse: collapse;
+
   }
+  .desc {
+    width: 60%;
+    text-align: left;
+    padding-left: 20px;
+  }
+  .price {
+    text-align: left;
+    padding-left: 20px;
+  }
+
 </style>

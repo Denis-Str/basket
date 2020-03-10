@@ -11,6 +11,7 @@
         FullPrice(
           :goods="goods"
         )
+        pre {{ goods }}
 </template>
 
 <script>
@@ -45,6 +46,9 @@ export default {
 
 <style lang="scss">
   @import "./main";
+  .wrapper {
+    padding-top: 30px;
+  }
   .container {
     width: 95%;
     margin: 0 auto;
