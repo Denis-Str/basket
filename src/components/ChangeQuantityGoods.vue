@@ -4,32 +4,18 @@
       .form__title Изменить количество
       .form__row
         .form__price {{ price }} x
-        button(
-          type="button"
-          @click="countDown"
-        ) -
+        button(type="button" @click="countDown") -
         label
           input(
             autofocus
             type="text"
             v-model="count"
           )
-        button(
-          type="button"
-          @click="countUp"
-        ) +
-        div(
-          class="form__sum"
-        ) = {{sum}}
+        button(type="button" @click="countUp") +
+        div(class="form__sum") = {{sum}}
       .form__edit
-        button(
-          type="button"
-          @click="saveBuy"
-        ) Сохранить
-        button(
-          type="button"
-          @click="cancelBuy"
-        ) Отменить
+        button(type="button" @click="saveBuy") Сохранить
+        button(type="button" @click="cancelBuy") Отменить
 </template>
 
 <script>
@@ -37,8 +23,8 @@
     name: "ChangeQuantityGoods",
     props: {
       count: Number,
-      price: Number,
-      sum: Number,
+      price: String,
+      sum: String,
       countUp: Function,
       countDown: Function,
       saveBuy: Function,

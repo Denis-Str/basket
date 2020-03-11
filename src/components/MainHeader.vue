@@ -1,19 +1,19 @@
 <template lang="pug">
   header.header
     .logo
-      img(:src="samsImg")
+      img(:src="samsungImg")
     search
 </template>
 
 <script>
-  import samsImg from '../assets/images/samsung.png'
+  import samsungImg from '../assets/images/samsung.png'
   import Search from "@/components/Search";
   export default {
     name: "MainHeader",
     components: {Search},
     data() {
       return {
-        samsImg
+        samsungImg
       }
     }
   }

@@ -6,12 +6,12 @@
         td {{ subtotal }} &#x20bd;
       tr
         td В том числе НДС:
-        td {{ Math.round(tax) }}  &#x20bd;
+        td {{ tax }}  &#x20bd;
     .hr
     table.final
       tr
         td Итого:
-        td.final-size {{ Math.round(inTotal) }} &#x20bd;
+        td.final-size {{ inTotal }} &#x20bd;
 </template>
 
 <script>
@@ -20,24 +20,10 @@
     name: "FullPrice",
     components: {Table},
     props: {
-      goods: Array
+      subtotal: String,
+      tax: String,
+      inTotal: String
     },
-    computed: {
-      subtotal() {
-        let sum = 0;
-        this.goods.map(item => {
-          item.totalPrice = item.count * item.price;
-          sum += item.totalPrice
-        });
-        return sum
-      },
-      tax() {
-        return this.subtotal * 0.18;
-      },
-      inTotal() {
-        return this.tax + this.subtotal
-      },
-    }
   }
 </script>
 

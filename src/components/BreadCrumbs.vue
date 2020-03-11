@@ -1,10 +1,7 @@
 <template lang="pug">
   .bread-crumbs
     ul.bread-crumbs__list
-      li(
-        v-for="link in links"
-        class="bread-crumbs__item"
-      )
+      li(v-for="link in links").bread-crumbs__item
         a(:href="link.href").bread-crumbs__link {{link.title}}
     .bread-crumbs__sup-title Корзина
 </template>

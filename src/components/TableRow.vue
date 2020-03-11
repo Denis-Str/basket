@@ -3,35 +3,31 @@
     td(class="table__cell table__cell-border-right checked")
       input(
         type="checkbox"
-        @change.self.prevent="checkedGood"
+        @change="checkedGood"
         class="checkbox"
       )
       span {{good.id + 1}}
     td(class="table__cell table__cell-border-right img")
-      img(
-
-      )
+      img(:src="good.img")
     td(class="table__cell table__cell-border-right desc") {{ good.content }}
     td(class="table__cell price")
-      span(style="padding-right: 7px") {{ good.price }} &#x20bd;
+      span(style="padding-right: 7px") {{ separatePrice(good.price) }} &#x20bd;
       span(v-show="isShow") x
     td(class="table__cell value")
       span(@click="isShow = true") {{good.count}}
       change-quantity-goods(
         v-show="isShow"
-        :count="good.count"
-        :price="good.price"
-        :sum="good.totalPrice"
+        :count="count"
+        :price="separatePrice(good.price)"
+        :sum="separatePrice(sumInPopup)"
         :countUp="changeCountUp"
         :countDown="changeCounterDown"
         :saveBuy="saveBuy"
         :cancelBuy="cancelBuy"
       )
-    td(
-      class="table__cell sum"
-    )
+    td(class="table__cell sum")
       span(v-show="isShow") =
-      span(style="padding-left: 7px") {{ good.totalPrice }} &#x20bd;
+      span(style="padding-left: 7px") {{ separatePrice(sumInRow) }} &#x20bd;
 </template>
 
 <script>
@@ -42,31 +38,44 @@
     data() {
       return {
         isShow: false,
+        count: 0,
+        sumInRow: 0
       }
     },
     props: {
       good: Object,
+      separate: Function
     },
     components: {ChangeQuantityGoods},
-
     methods: {
       checkedGood(e) {
         this.good.checked = e.target.checked
       },
       changeCountUp() {
-        this.good.count += 1
+        (this.count < 100 ) ? this.count += 1 : this.count = 100;
       },
       changeCounterDown() {
-        (this.good.count > 0 ) ? this.good.count -= 1 : this.good.count = 0;
+        (this.count > 0 ) ? this.count -= 1 : this.count = 0;
       },
       saveBuy() {
+        this.good.count = this.count;
+        this.sumInRow = this.sumInPopup;
         this.isShow = false;
       },
       cancelBuy() {
-        this.good.count = 0;
         this.isShow = false;
+      },
+      separatePrice(number) {
+        return String(number)
+          .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
       }
+
     },
+    computed: {
+      sumInPopup() {
+        return this.good.price * this.count
+      }
+    }
   }
 
 </script>
@@ -100,8 +109,11 @@
       border-right: 1px dotted black;
     }
   }
-  td {
-
+  .img {
+    padding: 0;
+    img {
+      margin: 0 auto;
+    }
   }
   .desc {
     width: 60%;
@@ -112,5 +124,4 @@
     text-align: left;
     padding-left: 20px;
   }
-
 </style>
