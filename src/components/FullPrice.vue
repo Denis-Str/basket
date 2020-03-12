@@ -33,7 +33,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /*text-align: right;*/
   }
   .subtotal,
   .final {

@@ -1,5 +1,5 @@
 <template lang="pug">
-  tr().table__row
+  tr.table__row
     td(class="table__cell table__cell-border-right checked")
       input(
         type="checkbox"
@@ -68,8 +68,7 @@
       separatePrice(number) {
         return String(number)
           .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
-      }
-
+      },
     },
     computed: {
       sumInPopup() {
