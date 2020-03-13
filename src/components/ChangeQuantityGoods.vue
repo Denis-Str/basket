@@ -9,7 +9,7 @@
           input(
             autofocus
             type="text"
-            v-model="count"
+            v-model.number="count"
           )
         button(type="button" @click="countUp") +
         div(class="form__sum") = {{sum}}

@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     filtered() {
-      this.goods = this.goods.filter(item => item.checked === false);
+      return this.goods = this.goods.filter(item => item.checked === false);
     },
     separatePrice(number) {
       return String(number)
@@ -66,7 +66,7 @@ export default {
     // const data = require("./data/goods.json");
     this.goods = require("./data/goods.json").map(item => (
         {...item,
-          count: 0,
+          count: 1,
           checked: false,
           img: require(`@/assets/goodsImg/${item.id + 1}.png`)
         }

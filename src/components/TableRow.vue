@@ -38,8 +38,7 @@
     data() {
       return {
         isShow: false,
-        count: 0,
-        sumInRow: 0
+        count: 1,
       }
     },
     props: {
@@ -63,6 +62,8 @@
         this.isShow = false;
       },
       cancelBuy() {
+        this.count = 1;
+        this.good.count = 1;
         this.isShow = false;
       },
       separatePrice(number) {
@@ -73,6 +74,9 @@
     computed: {
       sumInPopup() {
         return this.good.price * this.count
+      },
+      sumInRow() {
+        return this.good.price * this.good.count
       }
     }
   }
