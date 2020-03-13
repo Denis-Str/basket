@@ -6,7 +6,12 @@
         div.table__remove-inner
           span
           button(type="button" @click="deletedItemInArr") Удалить отмеченные
-    table-row(v-for="good of goods" :key="good.id" :good="good")
+    table-row(
+      v-for="good of goods"
+      :key="good.id"
+      :good="good"
+      :path="require(`@/assets/goodsImg/${good.id}.png`)"
+      )
 </template>
 
 <script>

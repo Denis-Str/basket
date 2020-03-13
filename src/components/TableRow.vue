@@ -6,9 +6,9 @@
         @change="checkedGood"
         class="checkbox"
       )
-      span {{good.id + 1}}
+      span {{good.id}}
     td(class="table__cell table__cell-border-right img")
-      img(:src="good.img")
+      img(:src="path")
     td(class="table__cell table__cell-border-right desc") {{ good.content }}
     td(class="table__cell price")
       span(style="padding-right: 7px") {{ separatePrice(good.price) }} &#x20bd;
@@ -43,7 +43,8 @@
     },
     props: {
       good: Object,
-      separate: Function
+      separate: Function,
+      path: String
     },
     components: {ChangeQuantityGoods},
     methods: {

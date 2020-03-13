@@ -10,7 +10,8 @@
           :deletedItemInArr="filtered"
           @separate="separatePrice"
         )
-        FullPrice(:goods="goods"
+        FullPrice(
+          :goods="goods"
           :subtotal="separatePrice(subtotalApp)"
           :tax="separatePrice(taxApp)"
           :inTotal="separatePrice(inTotalApp)"
@@ -68,7 +69,7 @@ export default {
         {...item,
           count: 1,
           checked: false,
-          img: require(`@/assets/goodsImg/${item.id + 1}.png`)
+          // img: require(`@/assets/goodsImg/${item.id}.png`)
         }
       )
     );
