@@ -10,6 +10,7 @@
             autofocus
             type="text"
             v-model.number="count"
+            @keypress="value"
           )
         button(type="button" @click="countUp") +
         div(class="form__sum") = {{sum}}
@@ -28,7 +29,8 @@
       countUp: Function,
       countDown: Function,
       saveBuy: Function,
-      cancelBuy: Function
+      cancelBuy: Function,
+      value: Function
     },
   }
 </script>

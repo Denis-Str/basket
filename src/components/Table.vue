@@ -11,7 +11,7 @@
       :key="good.id"
       :good="good"
       :path="require(`@/assets/goodsImg/${good.id}.png`)"
-      )
+    )
 </template>
 
 <script>
@@ -26,9 +26,7 @@
     },
     computed: {
       checkedItem() {
-        let count = 0;
-        this.goods.map(item => item.checked === true ? count++ : 0);
-        return count
+        return this.goods.filter(item => item.checked).length;
       },
     }
   }

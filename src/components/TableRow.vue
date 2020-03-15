@@ -1,19 +1,19 @@
 <template lang="pug">
   tr.table__row
-    td(class="table__cell table__cell-border-right checked")
+    td.checked.table__cell-border-right.table__cell
       input(
         type="checkbox"
         @change="checkedGood"
         class="checkbox"
       )
       span {{good.id}}
-    td(class="table__cell table__cell-border-right img")
+    td.img.table__cell-border-right.table__cell
       img(:src="path")
     td(class="table__cell table__cell-border-right desc") {{ good.content }}
     td(class="table__cell price")
       span(style="padding-right: 7px") {{ separatePrice(good.price) }} &#x20bd;
       span(v-show="isShow") x
-    td(class="table__cell value")
+    td(class="table__cell value" ref="Popup")
       span(@click="isShow = true") {{good.count}}
       change-quantity-goods(
         v-show="isShow"
@@ -24,6 +24,7 @@
         :countDown="changeCounterDown"
         :saveBuy="saveBuy"
         :cancelBuy="cancelBuy"
+        :value="keyInput"
       )
     td(class="table__cell sum")
       span(v-show="isShow") =
@@ -38,7 +39,7 @@
     data() {
       return {
         isShow: false,
-        count: 1,
+        count: 1
       }
     },
     props: {
@@ -57,9 +58,18 @@
       changeCounterDown() {
         (this.count > 0 ) ? this.count -= 1 : this.count = 0;
       },
+      keyInput(e) {
+        this.count = this.validateKeyEnter(e.key);
+        console.log(this.count)
+      },
+      validateKeyEnter(number) {
+        let value = '';
+        // if (typeof value === 'string' || isNaN(value)) return 0;
+        return  isNaN(number) ? 0 : value += number;
+        // return value
+      },
       saveBuy() {
         this.good.count = this.count;
-        this.sumInRow = this.sumInPopup;
         this.isShow = false;
       },
       cancelBuy() {
@@ -67,10 +77,37 @@
         this.good.count = 1;
         this.isShow = false;
       },
+      savePopup() {
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === '13') {
+            this.saveBuy()
+          }
+        });
+      },
+      closePopup() {
+        document.addEventListener('click', (e) => {
+          if (!this.$refs.Popup.contains(e.target)) {
+            this.isShow = false;
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' || e.key === '27') {
+            this.isShow = false;
+          }
+        });
+      },
       separatePrice(number) {
         return String(number)
           .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
-      },
+      }
+    },
+    mounted() {
+      this.closePopup();
+      this.savePopup()
+    },
+    destroyed() {
+      document.removeEventListener('click', this.closePopup());
+      document.removeEventListener('keydown', this.savePopup()());
     },
     computed: {
       sumInPopup() {
