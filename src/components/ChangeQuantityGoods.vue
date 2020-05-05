@@ -50,7 +50,7 @@
         this.$emit('show', false)
         this.counter = 1;
       },
-      // не работате :)
+      // не работает :)
 
       // savePopup() {
       //   document.addEventListener('keydown', (e) => {
