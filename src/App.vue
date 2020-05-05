@@ -5,17 +5,8 @@
         Main-header
         Nav-bar
         Bread-crumbs
-        Table(
-          :goods="goods"
-          :deletedItemInArr="filtered"
-          @separate="separatePrice"
-        )
-        FullPrice(
-          :goods="goods"
-          :subtotal="separatePrice(subtotalApp)"
-          :tax="separatePrice(taxApp)"
-          :inTotal="separatePrice(inTotalApp)"
-        )
+        Table
+        FullPrice
 </template>
 
 <script>
@@ -24,14 +15,9 @@ import NavBar from "@/components/NavBar";
 import BreadCrumbs from "@/components/BreadCrumbs";
 import Table from "@/components/Table";
 import FullPrice from "@/components/FullPrice";
+import {mapActions} from 'vuex'
 
 export default {
-  name: 'App',
-  data() {
-    return {
-      goods: [],
-    }
-  },
   components: {
     FullPrice,
     Table,
@@ -39,41 +25,14 @@ export default {
     NavBar,
     MainHeader,
   },
-  methods: {
-    filtered() {
-      return this.goods = this.goods.filter(item => item.checked === false);
-    },
-    separatePrice(number) {
-      return String(number)
-        .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
-    },
-  },
+
   computed: {
-    subtotalApp() {
-      let sum = 0;
-      this.goods.map(item => {
-        sum += item.count * item.price;
-      });
-      return sum
-    },
-    taxApp() {
-      return Math.round(this.subtotalApp * 0.18);
-    },
-    inTotalApp() {
-      return Math.round(this.taxApp + this.subtotalApp)
-    },
+    ...mapActions(['fetchJSON']),
   },
+
   created() {
-    // const data = require("./data/goods.json");
-    this.goods = require("./data/goods.json").map(item => (
-        {...item,
-          count: 1,
-          checked: false,
-          // img: require(`@/assets/goodsImg/${item.id}.png`)
-        }
-      )
-    );
-  },
+    this.fetchJSON
+  }
 }
 </script>
 

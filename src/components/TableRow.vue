@@ -3,119 +3,75 @@
     td.checked.table__cell-border-right.table__cell
       input(
         type="checkbox"
-        @change="checkedGood"
         class="checkbox"
+        @change="checkedProducts"
       )
-      span {{good.id}}
+      span {{ordinalNumber}}
     td.img.table__cell-border-right.table__cell
-      img(:src="path")
-    td(class="table__cell table__cell-border-right desc") {{ good.content }}
+      img(:src="require(`@/assets/goodsImg/${product.id}.png`)")
+    td(class="table__cell table__cell-border-right desc") {{ product.desc }}
     td(class="table__cell price")
-      span(style="padding-right: 7px") {{ separatePrice(good.price) }} &#x20bd;
-      span(v-show="isShow") x
-    td(class="table__cell value" ref="Popup")
-      span(@click="isShow = true") {{good.count}}
+      span(style="padding-right: 7px") {{ separatePrice(product.price) }} &#x20bd;
+      span(v-show="modal") x
+    td(class="table__cell value")
+      span(@click="modal = true") {{product.counter}}
       change-quantity-goods(
-        v-show="isShow"
-        :count="count"
-        :price="separatePrice(good.price)"
-        :sum="separatePrice(sumInPopup)"
-        :countUp="changeCountUp"
-        :countDown="changeCounterDown"
-        :saveBuy="saveBuy"
-        :cancelBuy="cancelBuy"
-        :value="keyInput"
+        v-show="modal"
+        @show="modal = $event"
+        :price="product.price"
+        :id="product.id"
       )
     td(class="table__cell sum")
-      span(v-show="isShow") =
+      span(v-show="modal") =
       span(style="padding-left: 7px") {{ separatePrice(sumInRow) }} &#x20bd;
 </template>
 
 <script>
   import ChangeQuantityGoods from "@/components/ChangeQuantityGoods";
+  import { mapMutations } from 'vuex';
 
   export default {
-    name: "TableRow",
     data() {
       return {
-        isShow: false,
-        count: 1
+        modal: false
       }
     },
     props: {
-      good: Object,
-      separate: Function,
-      path: String
+      product: Object,
+      ordinalNumber: Number
     },
+
     components: {ChangeQuantityGoods},
+
     methods: {
-      checkedGood(e) {
-        this.good.checked = e.target.checked
+      ...mapMutations(['changeChecked']),
+      checkedProducts(e) {
+        this.changeChecked({id: this.product.id, checked: e.target.checked})
       },
-      changeCountUp() {
-        (this.count < 100 ) ? this.count += 1 : this.count = 100;
-      },
-      changeCounterDown() {
-        (this.count > 0 ) ? this.count -= 1 : this.count = 0;
-      },
-      keyInput(e) {
-        this.count = this.validateKeyEnter(e.key);
-        console.log(this.count)
-      },
-      validateKeyEnter(number) {
-        let value = '';
-        // if (typeof value === 'string' || isNaN(value)) return 0;
-        return  isNaN(number) ? 0 : value += number;
-        // return value
-      },
-      saveBuy() {
-        this.good.count = this.count;
-        this.isShow = false;
-      },
-      cancelBuy() {
-        this.count = 1;
-        this.good.count = 1;
-        this.isShow = false;
-      },
-      savePopup() {
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === '13') {
-            this.saveBuy()
-          }
-        });
-      },
-      closePopup() {
-        document.addEventListener('click', (e) => {
-          if (!this.$refs.Popup.contains(e.target)) {
-            this.isShow = false;
-          }
-        });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' || e.key === '27') {
-            this.isShow = false;
-          }
-        });
-      },
+      // :value="keyInput"
+      // keyInput(e) {
+      //   this.count = this.validateKeyEnter(e.key);
+      //   console.log(this.count)
+      // },
+      // validateKeyEnter(number) {
+      //   let value = '';
+      //   // if (typeof value === 'string' || isNaN(value)) return 0;
+      //   return  isNaN(number) ? 0 : value += number;
+      //   // return value
+      // },
       separatePrice(number) {
         return String(number)
           .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
-      }
-    },
-    mounted() {
-      this.closePopup();
-      this.savePopup()
-    },
-    destroyed() {
-      document.removeEventListener('click', this.closePopup());
-      document.removeEventListener('keydown', this.savePopup()());
-    },
-    computed: {
-      sumInPopup() {
-        return this.good.price * this.count
       },
+      // show(event) {
+      //   this.modal = event
+      // }
+    },
+
+    computed: {
       sumInRow() {
-        return this.good.price * this.good.count
-      }
+        return this.product.price * this.product.counter
+      },
     }
   }
 

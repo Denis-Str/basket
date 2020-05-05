@@ -1,5 +1,5 @@
 <template lang="pug">
-  form.form
+  form.form(ref="modal")
     .container
       .form__title Изменить количество
       .form__row
@@ -9,28 +9,79 @@
           input(
             autofocus
             type="text"
-            v-model.number="count"
-            @keypress="value"
+            v-model.number="counter"
           )
         button(type="button" @click="countUp") +
         div(class="form__sum") = {{sum}}
       .form__edit
-        button(type="button" @click="saveBuy") Сохранить
-        button(type="button" @click="cancelBuy") Отменить
+        button(type="button" @click="saveBtn") Сохранить
+        button(type="button" @click="cancelBtn") Отменить
 </template>
 
 <script>
+  import { mapMutations } from "vuex";
+
   export default {
-    name: "ChangeQuantityGoods",
+    data() {
+      return {
+        counter: 1
+      }
+    },
     props: {
-      count: Number,
-      price: String,
-      sum: String,
-      countUp: Function,
-      countDown: Function,
-      saveBuy: Function,
-      cancelBuy: Function,
-      value: Function
+      price: Number,
+      id: Number
+    },
+    methods: {
+      ...mapMutations(['changeCounter']),
+
+      countUp() {
+        (this.counter < 100 ) ? this.counter += 1 : this.counter = 100;
+      },
+      countDown() {
+        (this.counter > 0 ) ? this.counter -= 1 : this.counter = 0;
+      },
+
+      saveBtn() {
+        this.$emit('show', false);
+        this.changeCounter({id: this.id, counter: this.counter});
+      },
+
+      cancelBtn() {
+        this.$emit('show', false)
+        this.counter = 1;
+      },
+      // не работате :)
+
+      // savePopup() {
+      //   document.addEventListener('keydown', (e) => {
+      //     if (e.key === 'Enter' || e.key === '13') this.saveBtn()
+      //   });
+      // },
+      //
+      // closePopup() {
+      //   document.addEventListener('click', (e) => {
+      //     if (!this.$refs.modal.contains(e.target)) this.$emit('show', false)
+      //   });
+      //
+      //   document.addEventListener('keydown', (e) => {
+      //     if (e.key === 'Escape' || e.key === '27') this.$emit('show', false)
+      //   });
+      // }
+    },
+
+    computed: {
+      sum() {
+        return this.counter * this.price
+      }
+    },
+
+    // mounted() {
+    //   this.closePopup();
+    //   this.savePopup()
+    // },
+    destroyed() {
+      // document.removeEventListener('click', this.closePopup);
+      // document.removeEventListener('keydown', this.savePopup);
     },
   }
 </script>

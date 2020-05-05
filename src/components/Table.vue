@@ -1,36 +1,39 @@
 <template lang="pug">
   table.table
     tr.table__head
-      th(colspan="3").table__checked Выделено <span>{{ checkedItem }}</span>
+      th(colspan="3").table__checked Выделено <span>{{ selectedProducts }}</span>
       th(colspan="3").table__remove
         div.table__remove-inner
           span
-          button(type="button" @click="deletedItemInArr") Удалить отмеченные
+          button(type="button" @click="deleteProduct") Удалить отмеченные
     table-row(
-      v-for="good of goods"
-      :key="good.id"
-      :good="good"
-      :path="require(`@/assets/goodsImg/${good.id}.png`)"
+      v-for="(product, index) in goods"
+      :key="product.id"
+      :product="product"
+      :ordinalNumber="index + 1"
     )
 </template>
 
 <script>
-  import TableRow from "@/components/TableRow"
+  import TableRow from "@/components/TableRow";
+  import { mapState, mapMutations} from 'vuex'
 
   export default {
-    name: "Table",
     components: {TableRow},
-    props: {
-      goods: Array,
-      deletedItemInArr: Function
-    },
+
     computed: {
-      checkedItem() {
+      ...mapState({
+        goods: state => state.goods
+      }),
+      selectedProducts() {
         return this.goods.filter(item => item.checked).length;
-      },
+      }
+    },
+
+    methods: {
+      ...mapMutations(['deleteProduct']),
     }
   }
-
 </script>
 
 <style lang="scss" scoped>

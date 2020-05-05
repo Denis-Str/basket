@@ -3,27 +3,30 @@
     table.subtotal
       tr
         td Промежуточный итог по корзине:
-        td {{ subtotal }} &#x20bd;
+        td {{ separatePrice(sum) }} &#x20bd;
       tr
         td В том числе НДС:
-        td {{ tax }}  &#x20bd;
+        td {{ separatePrice(tax) }}  &#x20bd;
     .hr
     table.final
       tr
         td Итого:
-        td.final-size {{ inTotal }} &#x20bd;
+        td.final-size {{ separatePrice(total) }} &#x20bd;
 </template>
 
 <script>
-  import Table from "@/components/Table";
+  import { mapGetters } from 'vuex';
+
   export default {
-    name: "FullPrice",
-    components: {Table},
-    props: {
-      subtotal: String,
-      tax: String,
-      inTotal: String
+    methods: {
+      separatePrice(number) {
+        return String(number)
+          .replace(/(\d)(?=(\d{3})+([^\d]|$))/g, '$1 ');
+      },
     },
+    computed: {
+      ...mapGetters(['sum', 'tax', 'total'])
+    }
   }
 </script>
 
@@ -34,6 +37,7 @@
     flex-direction: column;
     align-items: flex-end;
   }
+
   .subtotal,
   .final {
     max-width: 370px;
@@ -41,10 +45,12 @@
     white-space: nowrap;
     font-size: 14px;
     border-spacing: 0 25px;
+
     td {
       &:first-child {
         width: 215px;
       }
+
       &:last-child {
         width: 115px;
         font-size: 18px;
@@ -52,17 +58,21 @@
       }
     }
   }
+
   .hr {
     display: block;
     width: 100%;
     border-top: 2px dotted #e8e8e8;
   }
+
   .final {
     color: #0a7eb5;
+
     td {
       &:first-child {
         text-transform: uppercase;
       }
+
       &:last-child {
         font-size: 24px;
       }
